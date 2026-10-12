@@ -45,7 +45,14 @@ npm run dev:css
 
 `npm run check` は TypeScript の型チェック、`npm run build` は CSS の生成と Wrangler の dry-run ビルドを実行します。npm scripts 経由で実行することで、インストール済みのプロジェクトローカル Wrangler が確実に使用されます。
 
-Cloudflare の Workers Builds を利用する場合は、ビルドコマンドに `npm run build` を設定してください。デプロイコマンドを個別に指定する場合は `npm run deploy` を設定します。シェルから `wrangler` を直接呼ぶのではなく、npm script 経由で実行してください。Wrangler は通常依存として登録しているため、本番依存のみをインストールする環境でも利用できます。
+Cloudflare の Workers Builds を利用する場合は、**Build command** と **Deploy command** の両方を次のように設定してください。
+
+| Cloudflare の設定 | コマンド |
+| --- | --- |
+| Build command | `npm run build` |
+| Deploy command | `npm run deploy` |
+
+Build command はログ上で成功しても、Deploy command を `wrangler deploy` のままにすると、npm script の PATH 設定を通らず `wrangler: not found` で失敗します。Cloudflare の Deploy command からも必ず `npm run deploy` を呼び出してください。Wrangler は通常依存として登録しているため、本番依存のみをインストールする環境でも利用できます。
 
 ## D1 マイグレーション
 
