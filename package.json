@@ -12,13 +12,13 @@
     "deploy": "npm run check && npm run css:build && npx --yes wrangler@^4.40.0 deploy"
   },
   "dependencies": {
-    "hono": "^4.9.0"
+    "hono": "^4.9.0",
+    "wrangler": "^4.40.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261012.1",
     "@tailwindcss/cli": "^4.1.0",
     "tailwindcss": "^4.1.0",
-    "typescript": "^5.9.0",
-    "wrangler": "^4.40.0"
+    "typescript": "^5.9.0"
   }
 }
