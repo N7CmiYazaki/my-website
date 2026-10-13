@@ -7,5 +7,19 @@
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": true
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-website-db",
+      "database_id": "fd46b4fc-aef2-4fba-8744-8ba8fe139997",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "my-website-r2"
+    }
+  ]
 }

@@ -53,6 +53,20 @@ app.get("/", (c) =>
   ),
 );
 
+app.get("/api/health", async (c) => {
+  const result = await c.env.DB.prepare("SELECT 1 AS connected").first<{
+    connected: number;
+  }>();
+
+  if (result?.connected !== 1) {
+    return c.json({ status: "error", service: "D1" }, 503);
+  }
+
+  await c.env.FILES.list({ limit: 1 });
+
+  return c.json({ status: "ok", d1: "connected", r2: "connected" });
+});
+
 app.notFound((c) => c.env.ASSETS.fetch(c.req.raw));
 
 export default app;
