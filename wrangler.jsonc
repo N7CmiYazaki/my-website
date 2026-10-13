@@ -12,14 +12,14 @@
     {
       "binding": "DB",
       "database_name": "my-website-db",
-      "database_id": "fd46b4fc-aef2-4fba-8744-8ba8fe139997",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
       "migrations_dir": "migrations"
     }
   ],
   "r2_buckets": [
     {
       "binding": "FILES",
-      "bucket_name": "my-website-r2"
+      "bucket_name": "my-website-files"
     }
   ]
 }
