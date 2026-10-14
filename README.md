@@ -22,13 +22,13 @@ npm install
 npx wrangler login
 ```
 
-D1 データベースを作成し、表示された ID を `wrangler.jsonc` の `database_id` に設定します。
+D1 の接続先は `wrangler.jsonc` の `database_name` / `database_id` で設定します。現在は `my-website-db` と指定された ID を設定済みです。別のデータベースを利用する場合は、D1 の UUID に置き換えてください。
 
 ```sh
 npx wrangler d1 create my-website-db
 ```
 
-R2 バケットを作成します。バケット名は `wrangler.jsonc` の `bucket_name` と一致させてください。
+R2 の接続先は `wrangler.jsonc` の `bucket_name` で設定します。現在は `my-website-r2` を設定済みです。別のバケットを利用する場合は、実際の名前に合わせてください。
 
 ```sh
 npx wrangler r2 bucket create my-website-files
@@ -63,7 +63,7 @@ npx wrangler d1 migrations apply DB --local
 npx wrangler d1 migrations apply DB --remote
 ```
 
-D1 は Hono のハンドラーから `c.env.DB`、R2 は `c.env.FILES` で利用します。たとえば D1 は `c.env.DB.prepare(...).bind(...).all()`、R2 は `c.env.FILES.put(key, value)` / `c.env.FILES.get(key)` を使用します。
+D1 は Hono のハンドラーから `c.env.DB`、R2 は `c.env.FILES` で利用します。`/api/health` は D1 に `SELECT 1` を実行し、R2 バケットを読み取り専用で一覧確認して、両方の接続状態を返します。たとえば D1 は `c.env.DB.prepare(...).bind(...).all()`、R2 は `c.env.FILES.put(key, value)` / `c.env.FILES.get(key)` を使用します。
 
 ## デプロイ
 
