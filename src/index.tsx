@@ -24,16 +24,16 @@ app.get("/", async (c) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"
-          content="Yazaki のプロフィールサイト。Web、デザイン、テクノロジーについて紹介します。"
+          content="Miyazaki のプロフィールサイト。Web、デザイン、テクノロジーについて紹介します。"
         />
         <link rel="stylesheet" href="/styles.css" />
-        <title>Yazaki — Profile</title>
+        <title>Miyazaki — Profile</title>
       </head>
       <body>
         <header class="site-header">
-          <a class="wordmark" href="/" aria-label="Yazaki ホーム">
-            <span class="wordmark-mark" aria-hidden="true">Y</span>
-            <span>Yazaki</span>
+          <a class="wordmark" href="/" aria-label="Miyazaki ホーム">
+            <span class="wordmark-mark" aria-hidden="true">M</span>
+            <span>Miyazaki</span>
           </a>
           <nav class="site-nav" aria-label="メインナビゲーション">
             <a href="#about">プロフィール</a>
@@ -47,7 +47,7 @@ app.get("/", async (c) => {
               <p class="eyebrow"><span class="eyebrow-dot"></span>MY LITTLE CORNER OF THE WEB</p>
               <h1 id="hero-title">好奇心のままに、<br /><span>つくってみる。</span></h1>
               <p class="hero-description">
-                Webとデザインが好きな Yazaki の小さなプロフィールサイトです。
+                Webとデザインが好きな Miyazaki の小さなプロフィールサイトです。
                 気になったことを学びながら、少しずつ形にしています。
               </p>
               <a class="text-link" href="#about">
@@ -61,13 +61,13 @@ app.get("/", async (c) => {
                 <span class="online-indicator"><span></span>こんにちは</span>
               </div>
               <div class="profile-person">
-                <div class="avatar" role="img" aria-label="Yazaki のプロフィールアイコン">
-                  <span>Y</span>
+                <div class="avatar" role="img" aria-label="Miyazaki のプロフィールアイコン">
+                  <span>M</span>
                   <i class="avatar-spark avatar-spark-one"></i>
                   <i class="avatar-spark avatar-spark-two"></i>
                 </div>
                 <div class="profile-copy">
-                  <h2>Yazaki</h2>
+                  <h2>Miyazaki</h2>
                   <p>Web・デザイン・テクノロジー</p>
                 </div>
               </div>
@@ -133,8 +133,8 @@ app.get("/", async (c) => {
 
         <footer class="site-footer">
           <a class="wordmark footer-wordmark" href="/">
-            <span class="wordmark-mark" aria-hidden="true">Y</span>
-            <span>Yazaki</span>
+            <span class="wordmark-mark" aria-hidden="true">M</span>
+            <span>Miyazaki</span>
           </a>
           <p>Made with curiosity <span aria-hidden="true">✳</span></p>
           <a class="back-to-top" href="#top">
