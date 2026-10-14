@@ -2,58 +2,34 @@ import { Hono } from "hono";
 import type { Context } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import type { JSX } from "hono/jsx/jsx-runtime";
+import { AdminArticleList } from "./components/cms/admin-article-list";
+import { ArticleDetail } from "./components/cms/article-detail";
+import { ArticleEditor } from "./components/cms/article-editor";
+import { LoginPage } from "./components/cms/login-page";
+import { SiteDocument } from "./components/site-document";
+import type { Article } from "./types/article";
 import type { Bindings } from "./env";
-
-type Article = {
-  id: string;
-  title: string;
-  excerpt: string;
-  body: string;
-  icon: string;
-  theme: "blue" | "yellow" | "green";
-  published: number;
-  sort_order: number;
-  created_at: string;
-  updated_at: string;
-};
 
 const cms = new Hono<{ Bindings: Bindings }>();
 const sessionCookie = "admin_session";
 const sessionLifetime = 60 * 60 * 12;
 const textEncoder = new TextEncoder();
 
-function document(title: string, content: JSX.Element, description = title) {
+function adminDocument(title: string, content: JSX.Element, description = title) {
   return (
-    <html lang="ja">
-      <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content={description} />
-        <link rel="stylesheet" href="/styles.css" />
-        <title>{title} — Yazaki</title>
-      </head>
-      <body>
-        <header class="site-header">
-          <a class="wordmark" href="/" aria-label="Yazaki ホーム">
-            <span class="wordmark-mark" aria-hidden="true">Y</span>
-            <span>Yazaki</span>
-          </a>
-          <nav class="site-nav" aria-label="メインナビゲーション">
-            <a href="/">ホーム</a>
-            <a href="/admin">管理画面</a>
-          </nav>
-        </header>
-        {content}
-        <footer class="site-footer">
-          <a class="wordmark footer-wordmark" href="/">
-            <span class="wordmark-mark" aria-hidden="true">Y</span>
-            <span>Yazaki</span>
-          </a>
-          <p>Made with curiosity <span aria-hidden="true">✳</span></p>
-          <a class="back-to-top" href="/">ホームへ戻る ↑</a>
-        </footer>
-      </body>
-    </html>
+    <SiteDocument
+      title={`${title} — Yazaki`}
+      description={description}
+      brand="Yazaki"
+      mark="Y"
+      headerLinks={[
+        { href: "/", label: "ホーム" },
+        { href: "/admin", label: "管理画面" },
+      ]}
+      footerLinks={[{ href: "/", label: "ホームへ戻る ↑" }]}
+    >
+      {content}
+    </SiteDocument>
   );
 }
 
@@ -142,88 +118,22 @@ async function adminRequired(c: Context<{ Bindings: Bindings }>) {
 }
 
 function loginPage(error = "") {
-  return document(
-    "管理者ログイン",
-    <main class="page-width cms-main">
-      <section class="cms-panel login-panel">
-        <p class="eyebrow">ADMINISTRATOR</p>
-        <h1>管理画面にログイン</h1>
-        <p class="cms-intro">記事を編集するには管理者パスワードを入力してください。</p>
-        {error && <p class="form-error" role="alert">{error}</p>}
-        <form action="/admin/login" method="post" class="cms-form">
-          <label>
-            管理者パスワード
-            <input name="password" type="password" autocomplete="current-password" required />
-          </label>
-          <button class="button button-primary" type="submit">ログイン</button>
-        </form>
-      </section>
-    </main>,
-  );
+  return adminDocument("管理者ログイン", <LoginPage error={error} />);
 }
 
 function articleForm(article?: Article, error = "") {
-  const isEditing = article !== undefined;
-  return document(
-    isEditing ? "記事を編集" : "記事を作成",
+  return adminDocument(
+    article ? "記事を編集" : "記事を作成",
+    <ArticleEditor article={article} error={error} />,
+  );
+}
+
+function notFoundArticlePage() {
+  return adminDocument(
+    "記事が見つかりません",
     <main class="page-width cms-main">
-      <div class="cms-page-heading">
-        <div>
-          <p class="eyebrow">ARTICLE EDITOR</p>
-          <h1>{isEditing ? "記事を編集" : "新しい記事"}</h1>
-        </div>
-        <a class="text-link" href="/admin">一覧に戻る <span aria-hidden="true">↗</span></a>
-      </div>
-      <section class="cms-panel">
-        {error && <p class="form-error" role="alert">{error}</p>}
-        <form
-          action={isEditing ? `/admin/articles/${article.id}` : "/admin/articles"}
-          method="post"
-          class="cms-form"
-        >
-          <label>
-            記事タイトル
-            <input name="title" maxlength={100} required value={article?.title ?? ""} />
-          </label>
-          <label>
-            カードの説明
-            <textarea name="excerpt" rows={2} maxlength={200} required>{article?.excerpt ?? ""}</textarea>
-          </label>
-          <label>
-            記事本文
-            <textarea name="body" rows={14} required>{article?.body ?? ""}</textarea>
-            <span class="field-hint">改行はそのまま記事に表示されます。</span>
-          </label>
-          <div class="form-row">
-            <label>
-              アイコン
-              <input name="icon" maxlength={8} required value={article?.icon ?? "✳"} />
-            </label>
-            <label>
-              カードの色
-              <select name="theme">
-                <option value="blue" selected={(article?.theme ?? "blue") === "blue"}>ブルー</option>
-                <option value="yellow" selected={article?.theme === "yellow"}>イエロー</option>
-                <option value="green" selected={article?.theme === "green"}>グリーン</option>
-              </select>
-            </label>
-          </div>
-          <label class="checkbox-label">
-            <input
-              type="checkbox"
-              name="published"
-              checked={article ? article.published === 1 : true}
-            />
-            公開する
-          </label>
-          <div class="form-actions">
-            <button class="button button-primary" type="submit">
-              {isEditing ? "変更を保存" : "記事を作成"}
-            </button>
-            <a class="button button-secondary" href="/admin">キャンセル</a>
-          </div>
-        </form>
-      </section>
+      <h1>記事が見つかりませんでした</h1>
+      <a class="text-link" href="/#interests">記事一覧に戻る</a>
     </main>,
   );
 }
@@ -266,28 +176,9 @@ cms.get("/articles/:id", async (c) => {
   )
     .bind(c.req.param("id"))
     .first<Article>();
-  if (!article) {
-    return c.html(
-      document("記事が見つかりません", <main class="page-width cms-main"><h1>記事が見つかりませんでした</h1><a class="text-link" href="/#interests">記事一覧に戻る</a></main>),
-      404,
-    );
-  }
+  if (!article) return c.html(notFoundArticlePage(), 404);
   return c.html(
-    document(
-      article.title,
-      <main class="page-width article-main">
-        <a class="text-link article-back" href="/#interests">← 最近、気になること</a>
-        <article class={`article-detail interest-${article.theme}`}>
-          <div class="interest-icon article-icon" aria-hidden="true">{article.icon}</div>
-          <h1>{article.title}</h1>
-          <p class="article-excerpt">{article.excerpt}</p>
-          <div class="article-divider"></div>
-          <div class="article-body">{article.body}</div>
-        </article>
-        <a class="text-link" href="/#interests">ほかの記事も読む <span aria-hidden="true">↗</span></a>
-      </main>,
-      article.excerpt,
-    ),
+    adminDocument(article.title, <ArticleDetail article={article} />, article.excerpt),
   );
 });
 
@@ -307,48 +198,7 @@ cms.get("/admin", async (c) => {
     "SELECT * FROM articles ORDER BY sort_order, created_at DESC",
   ).all<Article>();
   return c.html(
-    document(
-      "記事管理",
-      <main class="page-width cms-main">
-        <div class="cms-page-heading">
-          <div>
-            <p class="eyebrow">CONTENT MANAGEMENT</p>
-            <h1>記事を管理</h1>
-            <p class="cms-intro">記事の作成、編集、公開状態を管理できます。</p>
-          </div>
-          <form action="/admin/logout" method="post">
-            <button class="button button-secondary" type="submit">ログアウト</button>
-          </form>
-        </div>
-        <div class="cms-list-toolbar">
-          <span>{results.length} 件の記事</span>
-          <a class="button button-primary" href="/admin/articles/new">＋ 新しい記事</a>
-        </div>
-        <section class="cms-article-list" aria-label="記事一覧">
-          {results.length === 0 ? (
-            <div class="cms-panel"><p>記事はまだありません。</p></div>
-          ) : results.map((article) => (
-            <article class="cms-list-item" key={article.id}>
-              <div class={`interest-icon list-icon interest-${article.theme}`} aria-hidden="true">{article.icon}</div>
-              <div class="cms-list-copy">
-                <h2>{article.title}</h2>
-                <p>{article.excerpt}</p>
-              </div>
-              <span class={`status-badge ${article.published ? "status-published" : "status-draft"}`}>
-                {article.published ? "公開中" : "下書き"}
-              </span>
-              <div class="cms-list-actions">
-                {article.published === 1 && <a href={`/articles/${article.id}`}>表示</a>}
-                <a href={`/admin/articles/${article.id}/edit`}>編集</a>
-                <form action={`/admin/articles/${article.id}/delete`} method="post">
-                  <button class="danger-link" type="submit">削除</button>
-                </form>
-              </div>
-            </article>
-          ))}
-        </section>
-      </main>,
-    ),
+    adminDocument("記事管理", <AdminArticleList articles={results} />),
   );
 });
 

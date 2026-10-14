@@ -1,0 +1,163 @@
+@media (max-width: 760px) {
+  .page-width,
+  .site-header,
+  .site-footer {
+    width: min(100% - 40px, 540px);
+  }
+
+  .site-header {
+    height: 72px;
+  }
+
+  .site-nav {
+    gap: 17px;
+    font-size: 11px;
+  }
+
+  .hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 45px;
+    padding-block: 75px 67px;
+  }
+
+  .hero h1 {
+    margin-top: 24px;
+    font-size: clamp(42px, 10vw, 58px);
+  }
+
+  .hero-description {
+    max-width: 500px;
+    font-size: 13px;
+  }
+
+  .profile-card {
+    max-width: 480px;
+    justify-self: start;
+  }
+
+  .orbit-one {
+    top: 30px;
+    right: 4px;
+    width: 62px;
+    height: 62px;
+  }
+
+  .orbit-two {
+    right: 12px;
+    bottom: 22px;
+  }
+
+  .intro-section {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding-block: 53px 59px;
+  }
+
+  .section-heading h2,
+  .interests-heading h2 {
+    font-size: 25px;
+  }
+
+  .mobile-break {
+    display: initial;
+  }
+
+  .interests-section {
+    padding-block: 48px 70px;
+  }
+
+  .interest-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .interest-card {
+    min-height: 195px;
+  }
+
+  .cms-main,
+  .article-main {
+    padding-block: 48px 65px;
+  }
+
+  .cms-page-heading {
+    align-items: flex-start;
+  }
+
+  .cms-panel {
+    padding: 22px;
+  }
+
+  .cms-list-item {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .cms-list-copy {
+    flex-basis: calc(100% - 60px);
+  }
+
+  .cms-list-actions {
+    margin-left: auto;
+  }
+
+  .status-badge {
+    margin-left: 56px;
+  }
+
+  .closing {
+    min-height: 100px;
+    padding-inline: 21px;
+  }
+
+  .closing p {
+    max-width: 260px;
+    line-height: 1.8;
+  }
+
+  .site-footer {
+    min-height: 92px;
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 420px) {
+  .page-width,
+  .site-header,
+  .site-footer {
+    width: calc(100% - 32px);
+  }
+
+  .site-nav {
+    gap: 12px;
+    font-size: 10px;
+  }
+
+  .profile-card {
+    padding-inline: 21px;
+  }
+
+  .avatar {
+    flex-basis: 66px;
+    width: 66px;
+    height: 66px;
+  }
+
+  .profile-copy h2 {
+    font-size: 21px;
+  }
+
+  .site-footer p {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

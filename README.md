@@ -13,6 +13,19 @@ Cloudflare Workers 上で Hono と JSX を実行する Web アプリケーショ
 
 アプリケーションのエントリーポイントは `src/index.tsx` です。Cloudflare のリソース ID やアカウント認証情報はソースコードに含めず、Wrangler の設定と Cloudflare の環境で管理します。
 
+## ソースコード構成
+
+- `src/index.tsx`: Hono のルートとトップページの組み立て
+- `src/components/site-*`: 共通のページ枠、ヘッダー、フッター
+- `src/components/home/`: トップページの各セクションとプロフィール・記事カード
+- `src/components/cms/`: CMS のログイン、記事一覧・行、編集フォーム、記事詳細
+- `src/cms.tsx`: CMS と記事ページのルート、認証、記事データ処理
+- `src/types/article.ts`: 記事データの共有型
+- `src/styles.css`: Tailwind CSS と各スタイルをまとめるビルド入口
+- `src/styles/`: 共通、ホーム、CMS、アクセシビリティ、レスポンシブのスタイル
+
+文章や要素の構成は対応するコンポーネントで、色・余白・レスポンシブ表示などの見た目は `src/styles/` 内の用途別CSSで個別に調整できます。
+
 ## セットアップ
 
 Node.js と npm を用意し、依存関係をインストールします。
@@ -89,6 +102,27 @@ npx wrangler secret put ADMIN_SESSION_SECRET
 ```
 
 設定後、`/admin` からログインし、記事の作成・編集・削除、公開/下書きの切り替えができます。公開記事はトップページの「最近、気になること」に表示され、カードから記事詳細を閲覧できます。記事本文はプレーンテキストで、入力した改行を保って表示します。管理セッションは HttpOnly・SameSite Cookie で保持され、12 時間で期限切れになります。
+
+### GitHub Codespaces から本番設定する
+
+GitHub Codespaces の Secret は Codespace 内の Wrangler が Cloudflare に接続するための認証情報です。Worker の `ADMIN_PASSWORD` などは別途 Cloudflare に登録する必要があります。
+
+1. Cloudflare API token を作成し、対象アカウントに **Workers Scripts: Edit** と **D1: Edit** の権限を付けます。
+2. GitHub リポジトリの **Settings → Secrets and variables → Codespaces** に `CLOUDFLARE_API_TOKEN` を登録します。
+3. Codespace を再起動して Secret を読み込んだ後、ターミナルで管理者パスワードとセッション秘密値を Wrangler に登録します。
+
+```sh
+npx wrangler secret put ADMIN_PASSWORD
+npx wrangler secret put ADMIN_SESSION_SECRET
+```
+
+パスワードと秘密値はプロンプトに入力し、ソースコードやチャットには記載しないでください。登録後、次のコマンドで D1 マイグレーションを適用して Worker をデプロイします。
+
+```sh
+npm run deploy
+```
+
+`CLOUDFLARE_API_TOKEN` が Codespace のターミナルで参照できない場合は、Codespaces Secret の対象リポジトリ設定と Codespace の再起動を確認してください。
 
 ## デプロイ
 

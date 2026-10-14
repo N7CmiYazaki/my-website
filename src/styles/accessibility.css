@@ -1,0 +1,8 @@
+.interest-card:focus-visible,
+.button:focus-visible,
+.cms-list-actions a:focus-visible,
+.danger-link:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
