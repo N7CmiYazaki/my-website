@@ -65,6 +65,31 @@ npx wrangler d1 migrations apply DB --remote
 
 D1 は Hono のハンドラーから `c.env.DB`、R2 は `c.env.FILES` で利用します。`/api/health` は D1 に `SELECT 1` を実行し、R2 バケットを読み取り専用で一覧確認して、両方の接続状態を返します。たとえば D1 は `c.env.DB.prepare(...).bind(...).all()`、R2 は `c.env.FILES.put(key, value)` / `c.env.FILES.get(key)` を使用します。
 
+## CMS
+
+記事は D1 の `articles` テーブルで管理します。初回セットアップ時にマイグレーションを適用してください。
+
+```sh
+npx wrangler d1 migrations apply DB --local
+npx wrangler d1 migrations apply DB --remote
+```
+
+開発環境では `.dev.vars`（Git 管理対象外）に管理者用の値を設定します。
+
+```text
+ADMIN_PASSWORD=十分に長く推測されにくい管理者パスワード
+ADMIN_SESSION_SECRET=32文字以上のランダムな秘密値
+```
+
+本番環境では Wrangler secret として登録します。セッション秘密値は `openssl rand -base64 32` などで生成してください。
+
+```sh
+npx wrangler secret put ADMIN_PASSWORD
+npx wrangler secret put ADMIN_SESSION_SECRET
+```
+
+設定後、`/admin` からログインし、記事の作成・編集・削除、公開/下書きの切り替えができます。公開記事はトップページの「最近、気になること」に表示され、カードから記事詳細を閲覧できます。記事本文はプレーンテキストで、入力した改行を保って表示します。管理セッションは HttpOnly・SameSite Cookie で保持され、12 時間で期限切れになります。
+
 ## デプロイ
 
 Cloudflare 認証、D1 の ID、R2 バケットを設定した後、以下を実行します。

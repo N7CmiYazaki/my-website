@@ -1,15 +1,23 @@
 import { Hono } from "hono";
+import cms from "./cms";
+import type { Bindings } from "./env";
 
-type Bindings = {
-  ASSETS: Fetcher;
-  DB: D1Database;
-  FILES: R2Bucket;
+type InterestArticle = {
+  id: string;
+  title: string;
+  excerpt: string;
+  icon: string;
+  theme: "blue" | "yellow" | "green";
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.get("/", (c) =>
-  c.html(
+app.get("/", async (c) => {
+  const { results: articles } = await c.env.DB.prepare(
+    "SELECT id, title, excerpt, icon, theme FROM articles WHERE published = 1 ORDER BY sort_order, created_at DESC",
+  ).all<InterestArticle>();
+
+  return c.html(
     <html lang="ja">
       <head>
         <meta charset="utf-8" />
@@ -101,27 +109,19 @@ app.get("/", (c) =>
               <span class="heading-spark" aria-hidden="true">✳</span>
             </div>
             <div class="interest-grid">
-              <article class="interest-card interest-blue">
-                <span class="interest-number">01</span>
-                <div class="interest-icon" aria-hidden="true">⌘</div>
-                <h3>Webをつくる</h3>
-                <p>使いやすくて、心地よいWebのこと。</p>
-                <span class="card-arrow" aria-hidden="true">↗</span>
-              </article>
-              <article class="interest-card interest-yellow">
-                <span class="interest-number">02</span>
-                <div class="interest-icon" aria-hidden="true">◉</div>
-                <h3>デザインを考える</h3>
-                <p>色や形で、伝わり方を工夫すること。</p>
-                <span class="card-arrow" aria-hidden="true">↗</span>
-              </article>
-              <article class="interest-card interest-green">
-                <span class="interest-number">03</span>
-                <div class="interest-icon" aria-hidden="true">✳</div>
-                <h3>新しいことを学ぶ</h3>
-                <p>知らなかった世界をのぞいてみること。</p>
-                <span class="card-arrow" aria-hidden="true">↗</span>
-              </article>
+              {articles.map((article, index) => (
+                <a
+                  class={`interest-card interest-${article.theme}`}
+                  href={`/articles/${article.id}`}
+                  aria-label={`${article.title}の記事を読む`}
+                >
+                  <span class="interest-number">{String(index + 1).padStart(2, "0")}</span>
+                  <div class="interest-icon" aria-hidden="true">{article.icon}</div>
+                  <h3>{article.title}</h3>
+                  <p>{article.excerpt}</p>
+                  <span class="card-arrow" aria-hidden="true">↗</span>
+                </a>
+              ))}
             </div>
           </section>
 
@@ -140,11 +140,14 @@ app.get("/", (c) =>
           <a class="back-to-top" href="#top">
             Back to top ↑
           </a>
+          <a class="back-to-top" href="/admin">管理画面</a>
         </footer>
       </body>
     </html>,
-  ),
-);
+  );
+});
+
+app.route("/", cms);
 
 app.get("/api/health", async (c) => {
   const result = await c.env.DB.prepare("SELECT 1 AS connected").first<{
