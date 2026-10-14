@@ -92,8 +92,10 @@ npx wrangler secret put ADMIN_SESSION_SECRET
 
 ## デプロイ
 
-Cloudflare 認証、D1 の ID、R2 バケットを設定した後、以下を実行します。
+Cloudflare 認証、D1 の ID、R2 バケットを設定した後、以下を実行します。`npm run deploy` はデプロイ前にリモート D1 の未適用マイグレーションを適用します。CMS を含む Worker を先にデプロイすると、記事テーブルがないためトップページが 500 になります。
 
 ```sh
 npm run deploy
 ```
+
+Cloudflare Workers Builds を利用している場合は、Deploy command を `npm run deploy` にしてください。CMS 導入前の Worker がすでにデプロイされている場合も、このコマンドを再実行すれば D1 マイグレーション適用後に Worker が更新されます。

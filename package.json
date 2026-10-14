@@ -9,7 +9,7 @@
     "css:build": "tailwindcss -i ./src/styles.css -o ./public/styles.css --minify",
     "check": "tsc --noEmit",
     "build": "npm run check && npm run css:build && wrangler deploy --dry-run",
-    "deploy": "npm run check && npm run css:build && wrangler deploy"
+    "deploy": "npm run check && npm run css:build && wrangler d1 migrations apply DB --remote && wrangler deploy"
   },
   "dependencies": {
     "hono": "^4.9.0",
