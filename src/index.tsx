@@ -16,38 +16,131 @@ app.get("/", (c) =>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"
-          content="Hono、Cloudflare Workers、D1、R2 を使った Web アプリケーション"
+          content="Yazaki のプロフィールサイト。Web、デザイン、テクノロジーについて紹介します。"
         />
         <link rel="stylesheet" href="/styles.css" />
-        <title>Cloudflare Hono Starter</title>
+        <title>Yazaki — Profile</title>
       </head>
-      <body class="min-h-screen bg-slate-950 text-slate-100">
-        <main class="mx-auto flex min-h-screen max-w-4xl flex-col justify-center px-6 py-20">
-          <p class="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
-            Cloudflare Workers
-          </p>
-          <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">
-            Hono starter
-          </h1>
-          <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Hono と JSX で動作するアプリケーションです。Tailwind CSS、
-            Cloudflare D1、R2 の設定が完了しています。
-          </p>
-          <div class="mt-10 grid gap-4 sm:grid-cols-3">
-            <div class="rounded-xl border border-slate-800 bg-slate-900 p-5">
-              <h2 class="font-semibold text-white">Hono / JSX</h2>
-              <p class="mt-2 text-sm text-slate-400">Workers 上で HTML を生成</p>
+      <body>
+        <header class="site-header">
+          <a class="wordmark" href="/" aria-label="Yazaki ホーム">
+            <span class="wordmark-mark" aria-hidden="true">Y</span>
+            <span>Yazaki</span>
+          </a>
+          <nav class="site-nav" aria-label="メインナビゲーション">
+            <a href="#about">プロフィール</a>
+            <a href="#interests">興味のあること</a>
+          </nav>
+        </header>
+
+        <main id="top">
+          <section class="hero page-width" aria-labelledby="hero-title">
+            <div class="hero-copy">
+              <p class="eyebrow"><span class="eyebrow-dot"></span>MY LITTLE CORNER OF THE WEB</p>
+              <h1 id="hero-title">好奇心のままに、<br /><span>つくってみる。</span></h1>
+              <p class="hero-description">
+                Webとデザインが好きな Yazaki の小さなプロフィールサイトです。
+                気になったことを学びながら、少しずつ形にしています。
+              </p>
+              <a class="text-link" href="#about">
+                もう少し知る <span aria-hidden="true">↘</span>
+              </a>
             </div>
-            <div class="rounded-xl border border-slate-800 bg-slate-900 p-5">
-              <h2 class="font-semibold text-white">D1</h2>
-              <p class="mt-2 text-sm text-slate-400">SQLite ベースのリレーショナルデータ</p>
+
+            <aside class="profile-card" aria-label="プロフィール">
+              <div class="profile-topline">
+                <span>PROFILE</span>
+                <span class="online-indicator"><span></span>こんにちは</span>
+              </div>
+              <div class="profile-person">
+                <div class="avatar" role="img" aria-label="Yazaki のプロフィールアイコン">
+                  <span>Y</span>
+                  <i class="avatar-spark avatar-spark-one"></i>
+                  <i class="avatar-spark avatar-spark-two"></i>
+                </div>
+                <div class="profile-copy">
+                  <h2>Yazaki</h2>
+                  <p>Web・デザイン・テクノロジー</p>
+                </div>
+              </div>
+              <div class="profile-divider"></div>
+              <p class="profile-note">
+                日々の発見や、つくったものを<br class="desktop-break" />ここにまとめていきます。
+              </p>
+              <div class="profile-tags">
+                <span>Curious</span>
+                <span>Creative</span>
+                <span>Always learning</span>
+              </div>
+              <div class="profile-decoration" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </aside>
+            <div class="hero-orbit orbit-one" aria-hidden="true"></div>
+            <div class="hero-orbit orbit-two" aria-hidden="true"></div>
+          </section>
+
+          <section class="intro-section page-width" id="about" aria-labelledby="about-title">
+            <div class="section-heading">
+              <p class="eyebrow">A LITTLE ABOUT ME</p>
+              <h2 id="about-title">好きなことを、<br class="mobile-break" />好きなペースで。</h2>
             </div>
-            <div class="rounded-xl border border-slate-800 bg-slate-900 p-5">
-              <h2 class="font-semibold text-white">R2</h2>
-              <p class="mt-2 text-sm text-slate-400">オブジェクトストレージ</p>
+            <p class="intro-text">
+              アイデアを試して、うまくいかなかったらまた考える。
+              そんなプロセスを楽しんでいます。このサイトもそのひとつ。
+              これから少しずつ、自分らしい場所に育てていく予定です。
+            </p>
+          </section>
+
+          <section class="interests-section page-width" id="interests" aria-labelledby="interests-title">
+            <div class="interests-heading">
+              <div>
+                <p class="eyebrow">THINGS I LIKE</p>
+                <h2 id="interests-title">最近、気になること</h2>
+              </div>
+              <span class="heading-spark" aria-hidden="true">✳</span>
             </div>
-          </div>
+            <div class="interest-grid">
+              <article class="interest-card interest-blue">
+                <span class="interest-number">01</span>
+                <div class="interest-icon" aria-hidden="true">⌘</div>
+                <h3>Webをつくる</h3>
+                <p>使いやすくて、心地よいWebのこと。</p>
+                <span class="card-arrow" aria-hidden="true">↗</span>
+              </article>
+              <article class="interest-card interest-yellow">
+                <span class="interest-number">02</span>
+                <div class="interest-icon" aria-hidden="true">◉</div>
+                <h3>デザインを考える</h3>
+                <p>色や形で、伝わり方を工夫すること。</p>
+                <span class="card-arrow" aria-hidden="true">↗</span>
+              </article>
+              <article class="interest-card interest-green">
+                <span class="interest-number">03</span>
+                <div class="interest-icon" aria-hidden="true">✳</div>
+                <h3>新しいことを学ぶ</h3>
+                <p>知らなかった世界をのぞいてみること。</p>
+                <span class="card-arrow" aria-hidden="true">↗</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="closing page-width">
+            <p>ここまで読んでくれて、ありがとうございます。</p>
+            <span aria-hidden="true">✳</span>
+          </section>
         </main>
+
+        <footer class="site-footer">
+          <a class="wordmark footer-wordmark" href="/">
+            <span class="wordmark-mark" aria-hidden="true">Y</span>
+            <span>Yazaki</span>
+          </a>
+          <p>Made with curiosity <span aria-hidden="true">✳</span></p>
+          <a class="back-to-top" href="#top">
+            Back to top ↑
+          </a>
+        </footer>
       </body>
     </html>,
   ),
