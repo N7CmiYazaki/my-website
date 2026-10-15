@@ -6,6 +6,11 @@ type InterestsSectionProps = {
 };
 
 export function InterestsSection({ articles }: InterestsSectionProps) {
+  const pages = Array.from(
+    { length: Math.ceil(articles.length / 3) },
+    (_, pageIndex) => articles.slice(pageIndex * 3, pageIndex * 3 + 3),
+  );
+
   return (
     <section class="interests-section page-width" id="interests" aria-labelledby="interests-title">
       <div class="interests-heading">
@@ -15,39 +20,41 @@ export function InterestsSection({ articles }: InterestsSectionProps) {
         </div>
         <span class="heading-spark" aria-hidden="true">✳</span>
       </div>
-      {articles.length > 0 && (
-        <div class="interest-carousel" aria-label="気になる記事">
-          <div class="interest-track">
-            <div class="interest-track-group">
-              {articles.map((article, index) => (
-                <InterestCard article={article} number={index + 1} />
-              ))}
-            </div>
-            <div class="interest-track-group" aria-hidden="true">
-              {articles.map((article, index) => (
-                <InterestCard article={article} number={index + 1} isDuplicate />
+      {pages.length > 0 && (
+        <div class="interest-carousel" aria-roledescription="カルーセル" aria-label="気になる記事">
+          <div class="interest-carousel-viewport">
+            <div class="interest-track">
+              {pages.map((pageArticles, pageIndex) => (
+                <div
+                  class="interest-page interest-grid"
+                  role="group"
+                  aria-roledescription="スライド"
+                  aria-label={`${pageIndex + 1} / ${pages.length}`}
+                  aria-hidden={pageIndex > 0 ? "true" : undefined}
+                  inert={pageIndex > 0 ? true : undefined}
+                >
+                  {pageArticles.map((article, articleIndex) => (
+                    <InterestCard
+                      article={article}
+                      number={pageIndex * 3 + articleIndex + 1}
+                    />
+                  ))}
+                </div>
               ))}
             </div>
           </div>
+          {pages.length > 1 && (
+            <div class="interest-carousel-controls">
+              <button class="interest-carousel-button" type="button" data-interest-prev aria-label="前の3件">
+                ←
+              </button>
+              <span class="interest-carousel-status" aria-live="polite">1 / {pages.length}</span>
+              <button class="interest-carousel-button" type="button" data-interest-next aria-label="次の3件">
+                →
+              </button>
+            </div>
+          )}
         </div>
-      )}
-      <div class="interest-grid interest-mobile-grid">
-        {articles.slice(0, 3).map((article, index) => (
-          <InterestCard article={article} number={index + 1} />
-        ))}
-      </div>
-      {articles.length > 3 && (
-        <details class="interest-mobile-more">
-          <summary>
-            <span class="interest-more-open">もっと見る</span>
-            <span class="interest-more-close">閉じる</span>
-          </summary>
-          <div class="interest-grid">
-            {articles.slice(3).map((article, index) => (
-              <InterestCard article={article} number={index + 4} />
-            ))}
-          </div>
-        </details>
       )}
     </section>
   );

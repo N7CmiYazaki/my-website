@@ -366,37 +366,57 @@
   width: 100%;
 }
 
+.interest-carousel-viewport {
+  overflow: hidden;
+}
+
 .interest-track {
   display: flex;
-  width: max-content;
-  animation: interest-scroll 36s linear infinite;
+  transition: transform 380ms ease;
+  will-change: transform;
 }
 
-.interest-carousel:hover .interest-track,
-.interest-carousel:focus-within .interest-track {
-  animation-play-state: paused;
+.interest-page {
+  flex: 0 0 100%;
 }
 
-.interest-track-group {
+.interest-carousel-controls {
   display: flex;
-  flex: none;
-  gap: 16px;
-  padding-right: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
 }
 
-.interest-track .interest-card {
-  flex: 0 0 clamp(250px, 28vw, 330px);
+.interest-carousel-button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid #e8eaed;
+  border-radius: 50%;
+  background: #fff;
+  color: #5f6368;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 180ms ease, color 180ms ease, opacity 180ms ease;
 }
 
-@keyframes interest-scroll {
-  to {
-    transform: translateX(-50%);
-  }
+.interest-carousel-button:hover:not(:disabled) {
+  background: #202124;
+  color: #fff;
 }
 
-.interest-mobile-grid,
-.interest-mobile-more {
-  display: none;
+.interest-carousel-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.interest-carousel-status {
+  min-width: 40px;
+  color: #80868b;
+  font-size: 11px;
+  text-align: center;
 }
 
 .interest-card {

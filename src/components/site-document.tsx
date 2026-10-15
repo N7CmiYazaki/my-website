@@ -34,6 +34,7 @@ export function SiteDocument({
         <meta name="description" content={description} />
         <link rel="stylesheet" href="/styles.css" />
         <script src="/hero-animation.js" defer></script>
+        <script src="/interest-carousel.js" defer></script>
         <title>{title}</title>
       </head>
       <body>
