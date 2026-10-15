@@ -355,6 +355,17 @@
   font-size: 28px;
 }
 
+.interests-heading-aside,
+.blog-heading-aside {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.home-swipe-hint {
+  display: none;
+}
+
 .interest-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -637,7 +648,6 @@
 .blog-section {
   padding-block: 64px 86px;
   border-top: 1px solid #f1f3f4;
-  background: #fafbfc;
 }
 
 .blog-heading {

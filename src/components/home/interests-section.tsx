@@ -13,7 +13,12 @@ export function InterestsSection({ articles }: InterestsSectionProps) {
           <p class="eyebrow">THINGS I LIKE</p>
           <h2 id="interests-title">最近、気になること</h2>
         </div>
-        <span class="heading-spark" aria-hidden="true">✳</span>
+        <div class="interests-heading-aside">
+          <span class="home-swipe-hint" aria-label="左にスワイプしてブログ記事へ">
+            <span aria-hidden="true">←</span> Slide to left
+          </span>
+          <span class="heading-spark" aria-hidden="true">✳</span>
+        </div>
       </div>
       <InterestCarousel articles={articles} label="気になる記事" showMoreOnMobile />
     </section>

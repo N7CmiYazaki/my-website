@@ -15,7 +15,12 @@ export function BlogSection({ articles }: BlogSectionProps) {
             <h2 id="blog-title">ブログ記事</h2>
             <p class="blog-description">気づいたことや、学んだことを記事にしています。</p>
           </div>
-          <span class="blog-heading-mark" aria-hidden="true">✎</span>
+          <div class="blog-heading-aside">
+            <span class="home-swipe-hint" aria-label="右にスワイプして最近、気になることへ戻る">
+              Slide to right <span aria-hidden="true">→</span>
+            </span>
+            <span class="blog-heading-mark" aria-hidden="true">✎</span>
+          </div>
         </div>
         {articles.length > 0
           ? <InterestCarousel articles={articles} label="ブログ記事" />

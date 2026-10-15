@@ -82,6 +82,27 @@
     padding-block: 48px 70px;
   }
 
+  .interests-heading-aside,
+  .blog-heading-aside {
+    gap: 0;
+  }
+
+  .home-swipe-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #80868b;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .interests-heading-aside .heading-spark,
+  .blog-heading-mark {
+    display: none;
+  }
+
   .interest-page {
     grid-template-columns: 1fr;
     gap: 12px;
