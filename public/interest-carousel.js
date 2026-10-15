@@ -1,74 +1,107 @@
-document.querySelectorAll(".interest-carousel").forEach((carousel) => {
+document.querySelectorAll("[data-interest-carousel]").forEach((carousel) => {
   const track = carousel.querySelector(".interest-track");
-  const slides = Array.from(carousel.querySelectorAll(".interest-slide"));
+  const pages = Array.from(carousel.querySelectorAll(".interest-page"));
   const previousButton = carousel.querySelector("[data-interest-prev]");
   const nextButton = carousel.querySelector("[data-interest-next]");
   const status = carousel.querySelector(".interest-carousel-status");
-  const controls = carousel.querySelector(".interest-carousel-controls");
-  const viewport = carousel.querySelector(".interest-carousel-viewport");
 
-  if (!track || !slides.length || !previousButton || !nextButton || !status || !controls || !viewport) {
+  if (!track || !pages.length || !previousButton || !nextButton || !status) {
     return;
   }
 
-  let currentIndex = 0;
-  let suppressClick = false;
+  let currentPage = 0;
 
-  const visibleCount = () => window.matchMedia("(max-width: 760px)").matches ? 1 : 3;
+  const showPage = (pageIndex) => {
+    currentPage = Math.max(0, Math.min(pageIndex, pages.length - 1));
+    const offset = pages[currentPage].getBoundingClientRect().left -
+      pages[0].getBoundingClientRect().left;
+    track.style.transform = `translateX(-${offset}px)`;
+    previousButton.disabled = currentPage === 0;
+    nextButton.disabled = currentPage === pages.length - 1;
+    status.textContent = `${currentPage + 1} / ${pages.length}`;
 
-  const showIndex = (index) => {
-    const count = visibleCount();
-    const maxIndex = Math.max(0, slides.length - count);
-    currentIndex = Math.max(0, Math.min(index, maxIndex));
-    const slideOffset = slides[currentIndex].getBoundingClientRect().left -
-      slides[0].getBoundingClientRect().left;
-    track.style.transform = `translateX(-${slideOffset}px)`;
-    previousButton.disabled = currentIndex === 0;
-    nextButton.disabled = currentIndex === maxIndex;
-    controls.hidden = slides.length <= count;
-    status.textContent = `${Math.ceil((currentIndex + count) / count)} / ${Math.ceil(slides.length / count)}`;
-
-    slides.forEach((slide, slideIndex) => {
-      const isVisible = slideIndex >= currentIndex && slideIndex < currentIndex + count;
-      slide.setAttribute("aria-hidden", String(!isVisible));
-      slide.inert = !isVisible;
+    pages.forEach((page, index) => {
+      const isCurrent = index === currentPage;
+      page.setAttribute("aria-hidden", String(!isCurrent));
+      page.inert = !isCurrent;
     });
   };
 
-  previousButton.addEventListener("click", () => showIndex(currentIndex - visibleCount()));
-  nextButton.addEventListener("click", () => showIndex(currentIndex + visibleCount()));
+  previousButton.addEventListener("click", () => showPage(currentPage - 1));
+  nextButton.addEventListener("click", () => showPage(currentPage + 1));
+  window.addEventListener("resize", () => showPage(currentPage), { passive: true });
+  showPage(0);
+});
 
+document.querySelectorAll("[data-home-carousel]").forEach((carousel) => {
+  const track = carousel.querySelector(".home-section-track");
+  const panels = Array.from(carousel.querySelectorAll("[data-home-panel]"));
+  const previousButton = carousel.querySelector("[data-home-prev]");
+  const nextButton = carousel.querySelector("[data-home-next]");
+  const status = carousel.querySelector("[data-home-status]");
+  const mobileQuery = window.matchMedia("(max-width: 760px)");
+
+  if (!track || panels.length < 2 || !previousButton || !nextButton || !status) {
+    return;
+  }
+
+  let currentPanel = 0;
   let startPoint;
-  viewport.addEventListener("pointerdown", (event) => {
-    if (event.pointerType === "mouse") return;
+  let suppressClick = false;
+
+  const showPanel = (index) => {
+    currentPanel = Math.max(0, Math.min(index, panels.length - 1));
+    const offset = panels[currentPanel].getBoundingClientRect().left -
+      panels[0].getBoundingClientRect().left;
+    track.style.transform = `translateX(-${offset}px)`;
+    panels.forEach((panel, panelIndex) => {
+      const isCurrent = panelIndex === currentPanel;
+      panel.setAttribute("aria-hidden", String(!isCurrent));
+      panel.inert = !isCurrent;
+    });
+    previousButton.disabled = currentPanel === 0;
+    nextButton.disabled = currentPanel === panels.length - 1;
+    status.textContent = mobileQuery.matches
+      ? currentPanel === 0
+        ? "スワイプしてブログ記事を見る"
+        : "スワイプして最近、気になることへ戻る"
+      : "矢印でセクションを切り替え";
+  };
+
+  previousButton.addEventListener("click", () => showPanel(currentPanel - 1));
+  nextButton.addEventListener("click", () => showPanel(currentPanel + 1));
+
+  carousel.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
     startPoint = { x: event.clientX, y: event.clientY };
   });
 
-  viewport.addEventListener("pointerup", (event) => {
+  carousel.addEventListener("pointerup", (event) => {
     if (!startPoint) return;
     const deltaX = event.clientX - startPoint.x;
     const deltaY = event.clientY - startPoint.y;
     startPoint = undefined;
-    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) return;
 
     suppressClick = true;
     window.setTimeout(() => {
       suppressClick = false;
     }, 500);
-    showIndex(currentIndex + (deltaX < 0 ? visibleCount() : -visibleCount()));
+    showPanel(currentPanel + (deltaX < 0 ? 1 : -1));
   });
 
-  viewport.addEventListener("pointercancel", () => {
+  carousel.addEventListener("pointercancel", () => {
     startPoint = undefined;
   });
 
-  viewport.addEventListener("click", (event) => {
+  carousel.addEventListener("click", (event) => {
     if (!suppressClick) return;
     event.preventDefault();
     event.stopPropagation();
     suppressClick = false;
   }, true);
 
-  window.addEventListener("resize", () => showIndex(currentIndex), { passive: true });
-  showIndex(0);
+  mobileQuery.addEventListener("change", () => showPanel(currentPanel));
+  window.addEventListener("resize", () => showPanel(currentPanel), { passive: true });
+  showPanel(0);
 });

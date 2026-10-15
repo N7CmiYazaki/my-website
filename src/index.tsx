@@ -38,8 +38,38 @@ app.get("/", async (c) => {
       <main id="top">
         <HeroSection />
         <AboutSection />
-        <InterestsSection articles={interests.results} />
-        <BlogSection articles={blogArticles.results} />
+        <div class="home-section-carousel" data-home-carousel>
+          <div class="home-section-track">
+            <div class="home-section-panel" data-home-panel>
+              <InterestsSection articles={interests.results} />
+            </div>
+            <div class="home-section-panel" data-home-panel>
+              <BlogSection articles={blogArticles.results} />
+            </div>
+          </div>
+          <div class="home-section-controls">
+            <button
+              class="interest-carousel-button"
+              type="button"
+              data-home-prev
+              aria-label="最近、気になることへ戻る"
+              disabled
+            >
+              ←
+            </button>
+            <span class="home-section-hint" data-home-status aria-live="polite">
+              スワイプしてブログ記事を見る
+            </span>
+            <button
+              class="interest-carousel-button"
+              type="button"
+              data-home-next
+              aria-label="ブログ記事を見る"
+            >
+              →
+            </button>
+          </div>
+        </div>
         <ClosingSection />
       </main>
     </SiteDocument>,

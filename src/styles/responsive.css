@@ -82,12 +82,22 @@
     padding-block: 48px 70px;
   }
 
-  .interest-track {
+  .interest-page {
+    grid-template-columns: 1fr;
     gap: 12px;
   }
 
-  .interest-slide {
-    flex-basis: 100%;
+  .interest-carousel-expandable {
+    display: none;
+  }
+
+  .interest-mobile-list {
+    display: block;
+  }
+
+  .interest-mobile-list > .interest-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .interest-card {
@@ -104,6 +114,10 @@
 
   .blog-heading h2 {
     font-size: 25px;
+  }
+
+  .home-section-controls {
+    display: none;
   }
 
   .cms-main,
@@ -216,6 +230,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .interest-track {
+    transition: none;
+  }
+
+  .home-section-track {
     transition: none;
   }
 

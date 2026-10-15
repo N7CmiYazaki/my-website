@@ -15,7 +15,7 @@ export function InterestsSection({ articles }: InterestsSectionProps) {
         </div>
         <span class="heading-spark" aria-hidden="true">✳</span>
       </div>
-      <InterestCarousel articles={articles} label="気になる記事" />
+      <InterestCarousel articles={articles} label="気になる記事" showMoreOnMobile />
     </section>
   );
 }

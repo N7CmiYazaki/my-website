@@ -368,18 +368,16 @@
 
 .interest-carousel-viewport {
   overflow: hidden;
-  touch-action: pan-y;
 }
 
 .interest-track {
   display: flex;
-  gap: 16px;
   transition: transform 380ms ease;
   will-change: transform;
 }
 
-.interest-slide {
-  flex: 0 0 calc((100% - 32px) / 3);
+.interest-page {
+  flex: 0 0 100%;
 }
 
 .interest-carousel-controls {
@@ -490,8 +488,108 @@
   color: inherit;
 }
 
-.interest-slide .interest-card {
+.interest-page .interest-card {
   height: 100%;
+}
+
+.interest-mobile-list {
+  display: none;
+}
+
+.interest-mobile-more {
+  margin-top: 12px;
+}
+
+.interest-mobile-more summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid #e8eaed;
+  border-radius: 14px;
+  color: #5f6368;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  list-style: none;
+}
+
+.interest-mobile-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.interest-mobile-more summary::after {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  content: "";
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 180ms ease;
+}
+
+.interest-mobile-more[open] summary::after {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.interest-more-close,
+.interest-mobile-more[open] .interest-more-open {
+  display: none;
+}
+
+.interest-mobile-more[open] .interest-more-close {
+  display: initial;
+}
+
+.interest-mobile-more > .interest-grid {
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.home-section-track > .home-section-panel {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+}
+
+.home-section-carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  touch-action: pan-y;
+}
+
+.home-section-track {
+  display: flex;
+  align-items: stretch;
+  transition: transform 380ms ease;
+  will-change: transform;
+}
+
+.home-section-controls {
+  position: absolute;
+  right: 0;
+  bottom: 24px;
+  left: 0;
+  display: flex;
+  width: min(1100px, calc(100% - 40px));
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-inline: auto;
+  pointer-events: none;
+}
+
+.home-section-controls > * {
+  pointer-events: auto;
+}
+
+.home-section-hint {
+  margin-right: auto;
+  color: #80868b;
+  font-size: 11px;
 }
 
 .blog-section {
