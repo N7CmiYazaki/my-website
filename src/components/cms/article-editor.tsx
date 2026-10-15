@@ -1,6 +1,13 @@
 import type { Article } from "../../types/article";
 
 const articleIcons = ["✳", "⌘", "◉", "✦", "♡", "⚡", "☼", "✿"];
+const articleThemes = [
+  { value: "red", label: "レッド" },
+  { value: "yellow", label: "イエロー" },
+  { value: "green", label: "グリーン" },
+  { value: "blue", label: "ブルー" },
+  { value: "purple", label: "パープル" },
+] as const;
 
 type ArticleEditorProps = {
   article?: Article;
@@ -35,8 +42,30 @@ export function ArticleEditor({ article, error = "" }: ArticleEditorProps) {
           </label>
           <label>
             記事本文
-            <textarea name="body" rows={14} required>{article?.body ?? ""}</textarea>
-            <span class="field-hint">改行はそのまま記事に表示されます。</span>
+            <div class="article-editor-toolbar" aria-label="本文の書式">
+              <button type="button" data-insert-prefix="# ">H1</button>
+              <button type="button" data-insert-prefix="## ">H2</button>
+              <button type="button" data-insert-prefix="### ">H3</button>
+              <button type="button" data-insert-link>リンク</button>
+              <button type="button" data-insert-anchor>飛びリンク</button>
+              <button type="button" data-insert-heading-anchor>飛び先見出し</button>
+              <button type="button" data-insert-image-url>画像URL</button>
+              <button type="button" data-upload-image>画像をアップロード</button>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/gif,image/webp"
+                data-image-file
+                hidden
+              />
+            </div>
+            <textarea name="body" rows={18} required data-article-body>{article?.body ?? ""}</textarea>
+            <span class="field-hint">
+              空行で段落を分けます。書式ボタンを使うか、
+              <code># 見出し</code>、<code>## 見出し</code>、<code>### 見出し</code>、
+              <code>[リンク文字](https://...)</code>、<code>![画像の説明](画像URL)</code> の形式で記述できます。
+              飛びリンク先には <code>## 見出し {"{#section-id}"}</code> のようにIDを付けてください。
+            </span>
+            <span class="field-hint" role="status" data-editor-status></span>
           </label>
           <div class="form-row">
             <label>
@@ -55,9 +84,14 @@ export function ArticleEditor({ article, error = "" }: ArticleEditorProps) {
             <label>
               カードの色
               <select name="theme">
-                <option value="blue" selected={(article?.theme ?? "blue") === "blue"}>ブルー</option>
-                <option value="yellow" selected={article?.theme === "yellow"}>イエロー</option>
-                <option value="green" selected={article?.theme === "green"}>グリーン</option>
+                {articleThemes.map((theme) => (
+                  <option
+                    value={theme.value}
+                    selected={(article?.theme ?? "blue") === theme.value}
+                  >
+                    {theme.label}
+                  </option>
+                ))}
               </select>
             </label>
           </div>

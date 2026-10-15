@@ -432,9 +432,11 @@
   box-shadow: 0 12px 28px rgb(60 64 67 / 8%);
 }
 
-.interest-blue { background: #f0f6ff; }
+.interest-red { background: #fff0ef; }
 .interest-yellow { background: #fff9e8; }
 .interest-green { background: #edf7f0; }
+.interest-blue { background: #f0f6ff; }
+.interest-purple { background: #f6f0ff; }
 
 .interest-number {
   color: #80868b;
@@ -457,6 +459,8 @@
 
 .interest-yellow .interest-icon { color: #e6a700; }
 .interest-green .interest-icon { color: var(--green); }
+.interest-red .interest-icon { color: #d93025; }
+.interest-purple .interest-icon { color: #8430ce; }
 
 .interest-card h3 {
   margin: 15px 0 0;

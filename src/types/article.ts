@@ -4,7 +4,7 @@ export type Article = {
   excerpt: string;
   body: string;
   icon: string;
-  theme: "blue" | "yellow" | "green";
+  theme: "red" | "yellow" | "green" | "blue" | "purple";
   published: number;
   sort_order: number;
   created_at: string;

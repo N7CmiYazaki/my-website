@@ -162,12 +162,14 @@ function articleFields(body: Record<string, unknown>) {
   const articleBody = readText("body", 20000);
   const icon = readText("icon", 8);
   const theme = readText("theme", 10);
+  const articleThemes = ["red", "yellow", "green", "blue", "purple"];
   if (
     !title ||
     !excerpt ||
     !articleBody ||
     !icon ||
-    (theme !== "blue" && theme !== "yellow" && theme !== "green")
+    !theme ||
+    !articleThemes.includes(theme)
   ) {
     return null;
   }
@@ -180,6 +182,85 @@ function articleFields(body: Record<string, unknown>) {
     published: body.published === "on" ? 1 : 0,
   };
 }
+
+function imageFormat(bytes: Uint8Array) {
+  if (
+    bytes.length >= 8 &&
+    bytes[0] === 0x89 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x4e &&
+    bytes[3] === 0x47 &&
+    bytes[4] === 0x0d &&
+    bytes[5] === 0x0a &&
+    bytes[6] === 0x1a &&
+    bytes[7] === 0x0a
+  ) {
+    return { extension: "png", contentType: "image/png" };
+  }
+  if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+    return { extension: "jpg", contentType: "image/jpeg" };
+  }
+  const gifVersion = String.fromCharCode(...bytes.slice(3, 6));
+  if (
+    bytes.length >= 6 &&
+    String.fromCharCode(...bytes.slice(0, 3)) === "GIF" &&
+    (gifVersion === "87a" || gifVersion === "89a")
+  ) {
+    return { extension: "gif", contentType: "image/gif" };
+  }
+  if (
+    bytes.length >= 12 &&
+    String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+    String.fromCharCode(...bytes.slice(8, 12)) === "WEBP"
+  ) {
+    return { extension: "webp", contentType: "image/webp" };
+  }
+  return null;
+}
+
+cms.get("/article-images/:key", async (c) => {
+  const key = c.req.param("key");
+  if (!/^[0-9a-f-]{36}\.(png|jpg|gif|webp)$/.test(key)) {
+    return c.text("画像が見つかりません。", 404);
+  }
+  const image = await c.env.FILES.get(key);
+  if (!image) return c.text("画像が見つかりません。", 404);
+  return new Response(image.body, {
+    headers: {
+      "Content-Type": image.httpMetadata?.contentType ?? "application/octet-stream",
+      "Cache-Control": "public, max-age=31536000, immutable",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
+});
+
+cms.post("/admin/article-images", async (c) => {
+  const unauthorized = await adminRequired(c);
+  if (unauthorized) return unauthorized;
+  const body = await c.req.parseBody();
+  const file = body.image;
+  if (typeof File === "undefined" || !(file instanceof File)) {
+    return c.json({ error: "画像ファイルを選択してください。" }, 400);
+  }
+  if (file.size === 0) return c.json({ error: "空の画像はアップロードできません。" }, 400);
+  if (file.size > 5 * 1024 * 1024) {
+    return c.json({ error: "画像は5MB以下にしてください。" }, 413);
+  }
+
+  const format = imageFormat(new Uint8Array(await file.slice(0, 12).arrayBuffer()));
+  if (!format) {
+    return c.json({ error: "PNG、JPEG、GIF、WebP形式の画像を選択してください。" }, 415);
+  }
+
+  const key = `${crypto.randomUUID()}.${format.extension}`;
+  await c.env.FILES.put(key, file.stream(), {
+    httpMetadata: {
+      contentType: format.contentType,
+      cacheControl: "public, max-age=31536000, immutable",
+    },
+  });
+  return c.json({ url: `/article-images/${key}` });
+});
 
 cms.get("/articles/:id", async (c) => {
   const article = await c.env.DB.prepare(

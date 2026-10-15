@@ -35,6 +35,7 @@ export function SiteDocument({
         <link rel="stylesheet" href="/styles.css" />
         <script src="/hero-animation.js" defer></script>
         <script src="/interest-carousel.js" defer></script>
+        <script src="/article-editor.js" defer></script>
         <title>{title}</title>
       </head>
       <body>
