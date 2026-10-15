@@ -72,6 +72,7 @@
 }
 
 .hero h1.is-typing .hero-caret {
+  opacity: 1;
   animation: caret-blink 1s steps(2, start) infinite;
 }
 

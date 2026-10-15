@@ -6,10 +6,14 @@ if (hero) {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (title && phrases.length > 0 && !reduceMotion.matches) {
+    const caret = title.querySelector(".hero-caret");
     const text = phrases.map((phrase) => Array.from(phrase.textContent ?? ""));
     phrases.forEach((phrase) => {
       phrase.textContent = "";
     });
+    if (caret) {
+      phrases[0].after(caret);
+    }
     title.classList.add("is-typing");
 
     let phraseIndex = 0;
@@ -30,7 +34,12 @@ if (hero) {
       characterIndex = 0;
 
       if (phraseIndex < phrases.length) {
+        if (caret) {
+          phrases[phraseIndex].after(caret);
+        }
         typingTimer = window.setTimeout(typeNextCharacter, 180);
+      } else {
+        title.classList.remove("is-typing");
       }
     };
 
