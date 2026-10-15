@@ -361,6 +361,44 @@
   gap: 16px;
 }
 
+.interest-carousel {
+  overflow: hidden;
+  width: 100%;
+}
+
+.interest-track {
+  display: flex;
+  width: max-content;
+  animation: interest-scroll 36s linear infinite;
+}
+
+.interest-carousel:hover .interest-track,
+.interest-carousel:focus-within .interest-track {
+  animation-play-state: paused;
+}
+
+.interest-track-group {
+  display: flex;
+  flex: none;
+  gap: 16px;
+  padding-right: 16px;
+}
+
+.interest-track .interest-card {
+  flex: 0 0 clamp(250px, 28vw, 330px);
+}
+
+@keyframes interest-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.interest-mobile-grid,
+.interest-mobile-more {
+  display: none;
+}
+
 .interest-card {
   position: relative;
   min-height: 220px;

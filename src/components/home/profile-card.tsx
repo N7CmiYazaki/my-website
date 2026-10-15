@@ -18,7 +18,7 @@ export function ProfileCard() {
       </div>
       <div class="profile-divider"></div>
       <p class="profile-note">
-        自分のアイデアや感じたことなど<br class="desktop-break" />日々のノウハウをまとめていきます。<br class="desktop-break" />Web、デザイン、テクノロジーについて紹介します。
+        普段からAIを使いまくっている人の<br class="desktop-break" />使い方のコツやノウハウなどをまとめていきます。<br class="desktop-break" />様々な技術トレンドなどを紹介していきます。
       </p>
       <div class="profile-tags">
         <span>Google Cloud</span>

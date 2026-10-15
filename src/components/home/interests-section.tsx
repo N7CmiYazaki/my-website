@@ -15,11 +15,40 @@ export function InterestsSection({ articles }: InterestsSectionProps) {
         </div>
         <span class="heading-spark" aria-hidden="true">✳</span>
       </div>
-      <div class="interest-grid">
-        {articles.map((article, index) => (
+      {articles.length > 0 && (
+        <div class="interest-carousel" aria-label="気になる記事">
+          <div class="interest-track">
+            <div class="interest-track-group">
+              {articles.map((article, index) => (
+                <InterestCard article={article} number={index + 1} />
+              ))}
+            </div>
+            <div class="interest-track-group" aria-hidden="true">
+              {articles.map((article, index) => (
+                <InterestCard article={article} number={index + 1} isDuplicate />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      <div class="interest-grid interest-mobile-grid">
+        {articles.slice(0, 3).map((article, index) => (
           <InterestCard article={article} number={index + 1} />
         ))}
       </div>
+      {articles.length > 3 && (
+        <details class="interest-mobile-more">
+          <summary>
+            <span class="interest-more-open">もっと見る</span>
+            <span class="interest-more-close">閉じる</span>
+          </summary>
+          <div class="interest-grid">
+            {articles.slice(3).map((article, index) => (
+              <InterestCard article={article} number={index + 4} />
+            ))}
+          </div>
+        </details>
+      )}
     </section>
   );
 }
