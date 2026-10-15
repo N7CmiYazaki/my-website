@@ -41,6 +41,15 @@ export function ArticleEditor({ article, error = "" }: ArticleEditorProps) {
             <textarea name="excerpt" rows={2} maxlength={200} required>{article?.excerpt ?? ""}</textarea>
           </label>
           <label>
+            記事の掲載場所
+            <select name="article_type" required>
+              <option value="interest" selected={(article?.article_type ?? "interest") === "interest"}>
+                最近、気になること
+              </option>
+              <option value="blog" selected={article?.article_type === "blog"}>ブログ記事</option>
+            </select>
+          </label>
+          <label>
             記事本文
             <div class="article-editor-toolbar" aria-label="本文の書式">
               <button type="button" data-insert-prefix="# ">H1</button>

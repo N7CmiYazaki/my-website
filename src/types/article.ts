@@ -5,6 +5,7 @@ export type Article = {
   body: string;
   icon: string;
   theme: "red" | "yellow" | "green" | "blue" | "purple";
+  article_type: "interest" | "blog";
   published: number;
   sort_order: number;
   created_at: string;

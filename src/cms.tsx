@@ -162,6 +162,7 @@ function articleFields(body: Record<string, unknown>) {
   const articleBody = readText("body", 20000);
   const icon = readText("icon", 8);
   const theme = readText("theme", 10);
+  const articleType = readText("article_type", 10);
   const articleThemes = ["red", "yellow", "green", "blue", "purple"];
   if (
     !title ||
@@ -169,7 +170,8 @@ function articleFields(body: Record<string, unknown>) {
     !articleBody ||
     !icon ||
     !theme ||
-    !articleThemes.includes(theme)
+    !articleThemes.includes(theme) ||
+    (articleType !== "interest" && articleType !== "blog")
   ) {
     return null;
   }
@@ -179,6 +181,7 @@ function articleFields(body: Record<string, unknown>) {
     body: articleBody,
     icon,
     theme,
+    articleType,
     published: body.published === "on" ? 1 : 0,
   };
 }
@@ -356,10 +359,10 @@ cms.post("/admin/articles", async (c) => {
   const maxOrder = await c.env.DB.prepare("SELECT MAX(sort_order) AS max_order FROM articles")
     .first<{ max_order: number | null }>();
   await c.env.DB.prepare(
-    `INSERT INTO articles (id, title, excerpt, body, icon, theme, published, sort_order)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO articles (id, title, excerpt, body, icon, theme, article_type, published, sort_order)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   )
-    .bind(crypto.randomUUID(), fields.title, fields.excerpt, fields.body, fields.icon, fields.theme, fields.published, (maxOrder?.max_order ?? 0) + 1)
+    .bind(crypto.randomUUID(), fields.title, fields.excerpt, fields.body, fields.icon, fields.theme, fields.articleType, fields.published, (maxOrder?.max_order ?? 0) + 1)
     .run();
   return c.redirect("/admin", 303);
 });
@@ -378,10 +381,10 @@ cms.post("/admin/articles/:id", async (c) => {
   }
   const result = await c.env.DB.prepare(
     `UPDATE articles
-     SET title = ?, excerpt = ?, body = ?, icon = ?, theme = ?, published = ?, updated_at = CURRENT_TIMESTAMP
+     SET title = ?, excerpt = ?, body = ?, icon = ?, theme = ?, article_type = ?, published = ?, updated_at = CURRENT_TIMESTAMP
      WHERE id = ?`,
   )
-    .bind(fields.title, fields.excerpt, fields.body, fields.icon, fields.theme, fields.published, c.req.param("id"))
+    .bind(fields.title, fields.excerpt, fields.body, fields.icon, fields.theme, fields.articleType, fields.published, c.req.param("id"))
     .run();
   if (result.meta.changes === 0) return c.text("記事が見つかりません。", 404);
   return c.redirect("/admin", 303);

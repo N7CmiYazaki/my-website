@@ -43,6 +43,21 @@
     height: 62px;
   }
 
+  .avatar-spark {
+    --avatar-spark-radius: 43px;
+    animation-name: avatar-spark-orbit-mobile;
+  }
+
+  @keyframes avatar-spark-orbit-mobile {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg) translateX(var(--avatar-spark-radius));
+    }
+
+    to {
+      transform: translate(-50%, -50%) rotate(360deg) translateX(var(--avatar-spark-radius));
+    }
+  }
+
   .orbit-two {
     right: 12px;
     bottom: 22px;
@@ -67,9 +82,12 @@
     padding-block: 48px 70px;
   }
 
-  .interest-page {
-    grid-template-columns: 1fr;
+  .interest-track {
     gap: 12px;
+  }
+
+  .interest-slide {
+    flex-basis: 100%;
   }
 
   .interest-card {
@@ -78,6 +96,14 @@
 
   .interest-carousel-controls {
     margin-top: 14px;
+  }
+
+  .blog-section {
+    padding-block: 48px 66px;
+  }
+
+  .blog-heading h2 {
+    font-size: 25px;
   }
 
   .cms-main,
@@ -173,6 +199,10 @@
     flex-basis: 66px;
     width: 66px;
     height: 66px;
+  }
+
+  .avatar-spark {
+    --avatar-spark-radius: 38px;
   }
 
   .profile-copy h2 {

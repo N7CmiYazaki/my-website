@@ -12,7 +12,7 @@ export function AdminArticleList({ articles }: AdminArticleListProps) {
         <div>
           <p class="eyebrow">CONTENT MANAGEMENT</p>
           <h1>記事を管理</h1>
-          <p class="cms-intro">記事の作成、編集、公開状態を管理できます。</p>
+          <p class="cms-intro">「最近、気になること」と「ブログ記事」の作成、編集、公開状態を管理できます。</p>
         </div>
         <form action="/admin/logout" method="post">
           <button class="button button-secondary" type="submit">ログアウト</button>

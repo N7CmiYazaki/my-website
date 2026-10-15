@@ -10,7 +10,7 @@ export function AdminArticleRow({ article }: AdminArticleRowProps) {
       <div class={`interest-icon list-icon interest-${article.theme}`} aria-hidden="true">{article.icon}</div>
       <div class="cms-list-copy">
         <h2>{article.title}</h2>
-        <p>{article.excerpt}</p>
+        <p>{article.article_type === "blog" ? "ブログ記事" : "最近、気になること"} ・ {article.excerpt}</p>
       </div>
       <span class={`status-badge ${article.published ? "status-published" : "status-draft"}`}>
         {article.published ? "公開中" : "下書き"}

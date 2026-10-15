@@ -368,16 +368,18 @@
 
 .interest-carousel-viewport {
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .interest-track {
   display: flex;
+  gap: 16px;
   transition: transform 380ms ease;
   will-change: transform;
 }
 
-.interest-page {
-  flex: 0 0 100%;
+.interest-slide {
+  flex: 0 0 calc((100% - 32px) / 3);
 }
 
 .interest-carousel-controls {
@@ -486,4 +488,55 @@
 .interest-card {
   display: block;
   color: inherit;
+}
+
+.interest-slide .interest-card {
+  height: 100%;
+}
+
+.blog-section {
+  padding-block: 64px 86px;
+  border-top: 1px solid #f1f3f4;
+  background: #fafbfc;
+}
+
+.blog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 26px;
+}
+
+.blog-heading h2 {
+  margin: 12px 0 0;
+  font-size: 28px;
+  letter-spacing: -0.06em;
+}
+
+.blog-description {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.blog-empty {
+  margin: 0;
+  padding: 30px;
+  border: 1px dashed #dadce0;
+  border-radius: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.blog-heading-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 16px;
+  background: #e8f0fe;
+  color: var(--blue);
+  font-size: 23px;
 }

@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { AboutSection } from "./components/home/about-section";
+import { BlogSection } from "./components/home/blog-section";
 import { ClosingSection } from "./components/home/closing-section";
 import { HeroSection } from "./components/home/hero-section";
 import { InterestsSection } from "./components/home/interests-section";
@@ -11,9 +12,14 @@ import type { InterestArticle } from "./types/article";
 const app = new Hono<{ Bindings: Bindings }>();
 
 app.get("/", async (c) => {
-  const { results: articles } = await c.env.DB.prepare(
-    "SELECT id, title, excerpt, icon, theme FROM articles WHERE published = 1 ORDER BY sort_order, created_at DESC",
-  ).all<InterestArticle>();
+  const [interests, blogArticles] = await Promise.all([
+    c.env.DB.prepare(
+      "SELECT id, title, excerpt, icon, theme FROM articles WHERE published = 1 AND article_type = 'interest' ORDER BY sort_order, created_at DESC",
+    ).all<InterestArticle>(),
+    c.env.DB.prepare(
+      "SELECT id, title, excerpt, icon, theme FROM articles WHERE published = 1 AND article_type = 'blog' ORDER BY sort_order, created_at DESC",
+    ).all<InterestArticle>(),
+  ]);
 
   return c.html(
     <SiteDocument
@@ -32,7 +38,8 @@ app.get("/", async (c) => {
       <main id="top">
         <HeroSection />
         <AboutSection />
-        <InterestsSection articles={articles} />
+        <InterestsSection articles={interests.results} />
+        <BlogSection articles={blogArticles.results} />
         <ClosingSection />
       </main>
     </SiteDocument>,
