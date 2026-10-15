@@ -27,7 +27,6 @@ app.get("/", async (c) => {
       ]}
       footerLinks={[
         { href: "#top", label: "Back to top ↑" },
-        { href: "/admin", label: "管理画面" },
       ]}
     >
       <main id="top">

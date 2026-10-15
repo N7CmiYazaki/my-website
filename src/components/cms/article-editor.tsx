@@ -1,5 +1,7 @@
 import type { Article } from "../../types/article";
 
+const articleIcons = ["✳", "⌘", "◉", "✦", "♡", "⚡", "☼", "✿"];
+
 type ArticleEditorProps = {
   article?: Article;
   error?: string;
@@ -39,7 +41,16 @@ export function ArticleEditor({ article, error = "" }: ArticleEditorProps) {
           <div class="form-row">
             <label>
               アイコン
-              <input name="icon" maxlength={8} required value={article?.icon ?? "✳"} />
+              <select name="icon" required>
+                {article?.icon && !articleIcons.includes(article.icon) && (
+                  <option value={article.icon} selected>{article.icon}</option>
+                )}
+                {articleIcons.map((icon) => (
+                  <option value={icon} selected={(article?.icon ?? "✳") === icon}>
+                    {icon}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
               カードの色

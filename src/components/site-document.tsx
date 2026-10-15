@@ -33,6 +33,7 @@ export function SiteDocument({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={description} />
         <link rel="stylesheet" href="/styles.css" />
+        <script src="/hero-animation.js" defer></script>
         <title>{title}</title>
       </head>
       <body>

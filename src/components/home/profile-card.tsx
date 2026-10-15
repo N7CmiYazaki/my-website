@@ -13,17 +13,21 @@ export function ProfileCard() {
         </div>
         <div class="profile-copy">
           <h2>Miyazaki</h2>
-          <p>Web・デザイン・テクノロジー</p>
+          <p>プログラミング・Webデザイン</p>
         </div>
       </div>
       <div class="profile-divider"></div>
       <p class="profile-note">
-        日々の発見や、つくったものを<br class="desktop-break" />ここにまとめていきます。
+        自分のアイデアや感じたことなど<br class="desktop-break" />日々のノウハウをまとめていきます。<br class="desktop-break" />Web、デザイン、テクノロジーについて紹介します。
       </p>
       <div class="profile-tags">
-        <span>Curious</span>
-        <span>Creative</span>
-        <span>Always learning</span>
+        <span>Google Cloud</span>
+        <span>Azure</span>
+        <span>AWS</span>
+        <span>Javascript</span>
+        <span>TypeScript</span>
+        <span>AI</span>
+        <span>Figma</span>
       </div>
       <div class="profile-decoration" aria-hidden="true">
         <span></span><span></span><span></span><span></span>

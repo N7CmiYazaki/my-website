@@ -14,18 +14,27 @@ const cms = new Hono<{ Bindings: Bindings }>();
 const sessionCookie = "admin_session";
 const sessionLifetime = 60 * 60 * 12;
 const textEncoder = new TextEncoder();
+const articleHeaderLinks = [
+  { href: "/", label: "ホーム" },
+  { href: "/#interests", label: "記事一覧" },
+];
 
-function adminDocument(title: string, content: JSX.Element, description = title) {
+function adminDocument(
+  title: string,
+  content: JSX.Element,
+  description = title,
+  headerLinks = [
+    { href: "/", label: "ホーム" },
+    { href: "/admin", label: "管理画面" },
+  ],
+) {
   return (
     <SiteDocument
       title={`${title} — Yazaki`}
       description={description}
       brand="Yazaki"
       mark="Y"
-      headerLinks={[
-        { href: "/", label: "ホーム" },
-        { href: "/admin", label: "管理画面" },
-      ]}
+      headerLinks={headerLinks}
       footerLinks={[{ href: "/", label: "ホームへ戻る ↑" }]}
     >
       {content}
@@ -135,6 +144,8 @@ function notFoundArticlePage() {
       <h1>記事が見つかりませんでした</h1>
       <a class="text-link" href="/#interests">記事一覧に戻る</a>
     </main>,
+    "記事が見つかりません",
+    articleHeaderLinks,
   );
 }
 
@@ -178,7 +189,12 @@ cms.get("/articles/:id", async (c) => {
     .first<Article>();
   if (!article) return c.html(notFoundArticlePage(), 404);
   return c.html(
-    adminDocument(article.title, <ArticleDetail article={article} />, article.excerpt),
+    adminDocument(
+      article.title,
+      <ArticleDetail article={article} />,
+      article.excerpt,
+      articleHeaderLinks,
+    ),
   );
 });
 
