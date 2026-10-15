@@ -68,15 +68,15 @@ export function InterestCarousel({
           </div>
           {articles.length > 3 && (
             <details class="interest-mobile-more">
-              <summary>
-                <span class="interest-more-open">もっと見る</span>
-                <span class="interest-more-close">閉じる</span>
-              </summary>
+              <summary>もっと見る</summary>
               <div class="interest-grid">
                 {articles.slice(3).map((article, index) => (
                   <InterestCard article={article} number={index + 4} />
                 ))}
               </div>
+              <button class="interest-mobile-close" type="button" data-interest-close>
+                閉じる <span aria-hidden="true">↑</span>
+              </button>
             </details>
           )}
         </div>

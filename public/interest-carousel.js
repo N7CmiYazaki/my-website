@@ -105,3 +105,24 @@ document.querySelectorAll("[data-home-carousel]").forEach((carousel) => {
   window.addEventListener("resize", () => showPanel(currentPanel), { passive: true });
   showPanel(0);
 });
+
+document.querySelectorAll(".interest-mobile-more").forEach((details) => {
+  const summary = details.querySelector("summary");
+  const closeButton = details.querySelector("[data-interest-close]");
+  if (!summary || !closeButton) return;
+
+  details.addEventListener("toggle", () => {
+    if (details.open) {
+      summary.tabIndex = -1;
+      summary.setAttribute("aria-hidden", "true");
+    } else {
+      summary.tabIndex = 0;
+      summary.removeAttribute("aria-hidden");
+    }
+  });
+
+  closeButton.addEventListener("click", () => {
+    details.open = false;
+    summary.focus();
+  });
+});
