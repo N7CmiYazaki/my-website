@@ -85,6 +85,33 @@
     padding-block: 48px 65px;
   }
 
+  .article-back {
+    margin-bottom: 28px;
+  }
+
+  .article-header {
+    padding-bottom: 27px;
+  }
+
+  .article-detail h1 {
+    margin-top: 21px;
+    font-size: clamp(30px, 8vw, 40px);
+  }
+
+  .article-excerpt {
+    font-size: 15px;
+  }
+
+  .article-body {
+    padding-top: 24px;
+    font-size: 15px;
+    line-height: 2;
+  }
+
+  .article-footer {
+    margin-top: 38px;
+  }
+
   .cms-page-heading {
     align-items: flex-start;
   }
