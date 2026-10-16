@@ -11,7 +11,7 @@ export function InterestsSection({ articles }: InterestsSectionProps) {
       <div class="interests-heading">
         <div>
           <p class="eyebrow">THINGS I LIKE</p>
-          <h2 id="interests-title">最近、気になること</h2>
+          <h2 id="interests-title">自分が大事だと思っていること。</h2>
         </div>
         <div class="interests-heading-aside">
           <span class="home-swipe-hint" aria-label="左にスワイプしてブログ記事へ">

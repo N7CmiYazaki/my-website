@@ -33,7 +33,7 @@ document.querySelectorAll("[data-interest-carousel]").forEach((carousel) => {
   showPage(0);
 });
 
-document.querySelectorAll("[data-home-carousel]").forEach((carousel) => {
+document.querySelectorAll("[data-section-carousel]").forEach((carousel) => {
   const track = carousel.querySelector(".home-section-track");
   const panels = Array.from(carousel.querySelectorAll("[data-home-panel]"));
   const previousButton = carousel.querySelector("[data-home-prev]");
@@ -63,8 +63,8 @@ document.querySelectorAll("[data-home-carousel]").forEach((carousel) => {
     nextButton.disabled = currentPanel === panels.length - 1;
     status.textContent = mobileQuery.matches
       ? currentPanel === 0
-        ? "スワイプしてブログ記事を見る"
-        : "スワイプして最近、気になることへ戻る"
+        ? carousel.dataset.nextStatus || "スワイプしてブログ記事を見る"
+        : carousel.dataset.previousStatus || "スワイプして最近、気になることへ戻る"
       : "矢印でセクションを切り替え";
   };
 

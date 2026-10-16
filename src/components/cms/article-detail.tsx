@@ -93,7 +93,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         <header class="article-header">
           <div class="article-category">
             <span class="interest-icon article-icon" aria-hidden="true">{article.icon}</span>
-            <span>最近、気になること</span>
+            <span>自分が大事だと思っていること。</span>
           </div>
           <h1>{article.title}</h1>
           <p class="article-excerpt">{article.excerpt}</p>

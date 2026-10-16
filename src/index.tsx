@@ -38,7 +38,7 @@ app.get("/", async (c) => {
       <main id="top">
         <HeroSection />
         <AboutSection />
-        <div class="home-section-carousel" data-home-carousel>
+        <div class="home-section-carousel" data-section-carousel>
           <div class="home-section-track">
             <div class="home-section-panel" data-home-panel>
               <InterestsSection articles={interests.results} />

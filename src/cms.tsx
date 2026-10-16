@@ -30,10 +30,10 @@ function adminDocument(
 ) {
   return (
     <SiteDocument
-      title={`${title} — Yazaki`}
+      title={`${title} — Miyazaki`}
       description={description}
-      brand="Yazaki"
-      mark="Y"
+      brand="Miyazaki"
+      mark="M"
       headerLinks={headerLinks}
       footerLinks={[{ href: "/", label: "ホームへ戻る ↑" }]}
     >

@@ -141,6 +141,24 @@
     display: none;
   }
 
+  .cms-section-carousel {
+    padding-bottom: 0;
+  }
+
+  .cms-list-section-heading {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .cms-list-section-heading h2 {
+    font-size: 15px;
+  }
+
+  .cms-list-section-heading .home-swipe-hint {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+
   .cms-main,
   .article-main {
     padding-block: 48px 65px;

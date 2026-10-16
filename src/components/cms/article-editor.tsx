@@ -44,7 +44,7 @@ export function ArticleEditor({ article, error = "" }: ArticleEditorProps) {
             記事の掲載場所
             <select name="article_type" required>
               <option value="interest" selected={(article?.article_type ?? "interest") === "interest"}>
-                最近、気になること
+                自分が大事だと思っていること。
               </option>
               <option value="blog" selected={article?.article_type === "blog"}>ブログ記事</option>
             </select>
